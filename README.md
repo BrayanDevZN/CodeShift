@@ -25,35 +25,69 @@
 
 ---
 
+## Índice
+
+- [O que é](#o-que-é)
+- [Instalação](#instalação)
+- [Início rápido](#início-rápido)
+- [Configuração](#configuração)
+- [Uso](#uso)
+- [Como funciona](#como-funciona)
+- [Estrutura](#estrutura)
+- [Desenvolvimento](#desenvolvimento)
+
 ## O que é
 
 O **CodeShift** percorre o seu projeto Python arquivo por arquivo e pede a um modelo de código que escreva a versão equivalente em C++. Tudo roda num menu de terminal, e o modelo pode ser local (LM Studio, Ollama ou qualquer servidor compatível com a API da OpenAI) ou carregado via `transformers`.
 
-> ⚠️ **Fase alpha.** A migração **substitui** os arquivos `.py` pelos arquivos C++. Faça um commit ou backup antes de rodar. Modelos pequenos (3B a 7B) ainda cometem erros: **revise e compile o resultado**.
+> ⚠️ **A migração substitui os arquivos `.py` pelos arquivos C++.** Faça um commit ou backup antes de rodar.
 
 ## Instalação
 
-Requer Python 3.10 ou mais novo.
+Requer **Python 3.10** ou mais novo.
 
 ```bash
-git clone <url-do-repositorio> CodeShift
-cd CodeShift
-
-# recomendado: comando global isolado
-pipx install .
-
-# ou numa venv, em modo de desenvolvimento (as mudanças no código valem na hora)
-python -m venv .venv && source .venv/bin/activate
-pip install -e .
+pip install codeshift
 ```
 
-Para usar um modelo **local** pelo `transformers` (baixa o `torch`, é pesado):
+Para usar um modelo **local** pelo `transformers` (baixa o `torch`, então é pesado):
 
 ```bash
-pipx install ".[local]"      # ou: pip install -e ".[local]"
+pip install "codeshift[local]"
+```
+
+Confira se deu certo:
+
+```bash
+codeshift --version
+```
+
+> 💡 **Dica:** para instalar o comando de forma isolada, sem misturar com as bibliotecas do seu sistema, use o [pipx](https://pipx.pypa.io): `pipx install codeshift`.
+
+Para atualizar:
+
+```bash
+pip install --upgrade codeshift
 ```
 
 Depois de instalado, só o comando `codeshift` fica disponível. Não há API para importar.
+
+## Início rápido
+
+```bash
+# 1. suba um servidor de modelo (exemplo com o LM Studio)
+lms server start
+lms load qwen2.5-coder-7b-instruct --context-length 16384 -y
+
+# 2. entre na pasta do projeto Python que você quer migrar
+cd meu-projeto
+
+# 3. crie o .env apontando para o servidor
+printf 'url = http://localhost:1234/v1\napi_key = lm-studio\n' > .env
+
+# 4. abra o CodeShift, escolha "3 Configurar modelo" e depois "1 Migrar projeto"
+codeshift
+```
 
 ## Configuração
 
@@ -73,18 +107,23 @@ url = http://localhost:1234/v1
 api_key = lm-studio
 ```
 
-Sem a variável `url`, o CodeShift usa o modelo local via `transformers`.
+| Variável | Para que serve |
+|---|---|
+| `url` | endereço do servidor compatível com a API da OpenAI |
+| `api_key` | chave enviada ao servidor (no LM Studio pode ser qualquer texto) |
+
+Sem a variável `url`, o CodeShift usa o modelo local via `transformers` (requer `pip install "codeshift[local]"`).
 
 ### 2. Modelo e temperatura
 
-Abra o `codeshift` e use a opção **Configurar modelo**. A escolha fica salva em `.codeshift/config.json`.
+Abra o `codeshift` e use a opção **Configurar modelo**. A escolha fica salva em `.codeshift/config.json`, dentro do projeto.
 
 | Modelo | Observação |
 |---|---|
 | `Qwen/Qwen3-Coder-Next` | o mais capaz |
 | `Qwen/Qwen2.5-Coder-14B-Instruct` | bom equilíbrio |
 | `Qwen/Qwen2.5-Coder-7B-Instruct` | padrão para testar |
-| `Qwen/Qwen2.5-Coder-3B-Instruct` | leve, erra mais |
+| `Qwen/Qwen2.5-Coder-3B-Instruct` | leve |
 
 Temperaturas entre `0.2` e `0.3` costumam gerar JSON mais estável.
 
@@ -114,8 +153,21 @@ codeshift
 | **3** Configurar modelo | Escolhe modelo, temperatura e arquivo `.env` |
 | **4** Atualizar configurações | Muda uma configuração já salva |
 | **5** Ver árvore do projeto | Lista pastas e arquivos |
+| **0** Sair | Fecha o programa |
 
-`codeshift --version` mostra a versão.
+| Comando | O que faz |
+|---|---|
+| `codeshift` | abre o menu |
+| `codeshift --version` | mostra a versão instalada |
+
+### Arquivos criados no seu projeto
+
+| Caminho | Conteúdo |
+|---|---|
+| `.codeshift/config.json` | modelo, temperatura e arquivo `.env` escolhidos |
+| `.codeshift/tree.json` | árvore do projeto com o status de cada arquivo |
+
+Adicione `.codeshift/` ao `.gitignore` do projeto migrado.
 
 ## Como funciona
 
@@ -157,40 +209,27 @@ O prompt completo do agente está em [`src/prompt/REFACTOR.md`](src/prompt/REFAC
 CodeShift/
 ├── assets/logo.svg
 ├── pyproject.toml
-├── src/
-│   ├── cli.py              # menu e telas do terminal
-│   ├── ui.py               # cores, caixas e componentes visuais
-│   ├── cmd.py              # roda comandos no terminal
-│   ├── schema.py           # modelos pydantic (config e ações)
-│   ├── agents/
-│   │   ├── refactor.py     # loop do agente
-│   │   ├── clean.py        # limpa cercas de markdown do JSON
-│   │   └── response/       # OpenAI-compatível e transformers
-│   ├── prompt/REFACTOR.md  # prompt do agente
-│   ├── settings/config.py  # configuração e .env
-│   └── utils/              # arquivos e árvore binária
-└── tests/estoque/          # projeto Python de exemplo (5 arquivos)
+└── src/
+    ├── cli.py              # menu e telas do terminal
+    ├── ui.py               # cores, caixas e componentes visuais
+    ├── cmd.py              # roda comandos no terminal
+    ├── schema.py           # modelos pydantic (config e ações)
+    ├── agents/
+    │   ├── refactor.py     # loop do agente
+    │   ├── clean.py        # limpa cercas de markdown do JSON
+    │   └── response/       # OpenAI-compatível e transformers
+    ├── prompt/REFACTOR.md  # prompt do agente
+    ├── settings/config.py  # configuração e .env
+    └── utils/              # arquivos e árvore binária
 ```
 
-## Limitações conhecidas
+## Desenvolvimento
 
-- O resultado **não é compilado** automaticamente. Pode haver erros de include, tipos e consistência entre arquivos.
-- Modelos de 7B ou menos podem ignorar o formato de saída ou reescrever estruturas em vez de portá-las.
-- O contexto do modelo precisa caber o prompt, a árvore e o arquivo lido. Arquivos muito grandes podem estourar.
-- Bibliotecas sem equivalente direto (ex.: `torch`) precisam de adaptação manual.
-
-## Próximos passos
-
-- [ ] Compilar cada arquivo com `g++ -fsyntax-only` e devolver o erro ao modelo
-- [ ] Passar os headers já gerados como contexto nos arquivos seguintes
-- [ ] Opção de gravar o C++ numa pasta separada, sem tocar nos `.py`
-- [ ] Publicar no PyPI
-
-## Testando com o exemplo
+Para mexer no código, clone o repositório e instale em modo editável (as mudanças valem na hora):
 
 ```bash
-cp -r tests/estoque /tmp/estoque && cd /tmp/estoque
-codeshift
+git clone https://github.com/BrayanDevZN/CodeShift.git
+cd CodeShift
+python -m venv .venv && source .venv/bin/activate
+pip install -e ".[local]"
 ```
-
-O projeto de exemplo é um controle de estoque pequeno, com 5 arquivos que dependem uns dos outros.
