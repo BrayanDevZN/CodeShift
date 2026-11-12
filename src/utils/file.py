@@ -32,4 +32,21 @@ class FileControl:
         with open(path, "w", encoding="utf-8") as file:
 
             json.dump(data, file, ensure_ascii=False, indent=4) if type == "json" else file.write(data)
+
             logger.success("Saved with success")
+
+    @staticmethod
+    def update(path: str, new_path:str, content:str) -> None:
+
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"Not exists {path}")
+
+        logger.info(f"Updating {path}...")
+
+        os.rename(path, new_path)
+
+        with open(new_path, "w", encoding="utf-8") as f:
+
+            f.write(content)
+
+        logger.success(f"{path} updated with success")

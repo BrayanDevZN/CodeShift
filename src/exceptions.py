@@ -11,3 +11,6 @@ class PathNotFound(Exception):
 
 class NotFoundEnv(Exception):
     pass
+
+class AmbiguousFile(Exception):
+    pass

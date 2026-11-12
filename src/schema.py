@@ -15,16 +15,16 @@ class AppConfig(BaseModel):
 
     model: ModelConfig
     path: str|None = Field(default=None)
-    env_file: str|None = Field(default=None)
+    env_file: str = Field(default=".env")
 
 
 class ActionMapping(BaseModel):
 
-    name: Literal["save", "quit", "read"]
-    arg: str| None = Field(default=None)
+    name: Literal["save", "quit", "read", "update_status", "update"]
+    arg: str | list[str] | None = Field(default=None)
 
 class OutPutMapping(BaseModel):
-    action: ActionMapping
+    actions: list[ActionMapping]
     content: str
 
     

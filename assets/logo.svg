@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="150" viewBox="0 0 640 150" role="img" aria-label="CodeShift">
+  <title>CodeShift</title>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#d97757"/>
+      <stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <g shape-rendering="crispEdges">
+    <rect x="60" y="36" width="16" height="16" fill="#d97757"/>
+    <rect x="76" y="36" width="16" height="16" fill="#d97757"/>
+    <rect x="92" y="36" width="16" height="16" fill="#d97757"/>
+    <rect x="108" y="36" width="16" height="16" fill="#d97757"/>
+    <rect x="124" y="36" width="16" height="16" fill="#d97757"/>
+    <rect x="140" y="36" width="16" height="16" fill="#d97757"/>
+    <rect x="28" y="52" width="16" height="16" fill="#d97757"/>
+    <rect x="44" y="52" width="16" height="16" fill="#d97757"/>
+    <rect x="60" y="52" width="16" height="16" fill="#d97757"/>
+    <rect x="76" y="52" width="16" height="16" fill="#d97757"/>
+    <rect x="92" y="52" width="16" height="16" fill="#d97757"/>
+    <rect x="108" y="52" width="16" height="16" fill="#d97757"/>
+    <rect x="124" y="52" width="16" height="16" fill="#d97757"/>
+    <rect x="140" y="52" width="16" height="16" fill="#d97757"/>
+    <rect x="156" y="52" width="16" height="16" fill="#d97757"/>
+    <rect x="172" y="52" width="16" height="16" fill="#d97757"/>
+    <rect x="28" y="68" width="16" height="16" fill="#d97757"/>
+    <rect x="44" y="68" width="16" height="16" fill="#d97757"/>
+    <rect x="60" y="68" width="16" height="16" fill="#1c1c24"/>
+    <rect x="76" y="68" width="16" height="16" fill="#d97757"/>
+    <rect x="92" y="68" width="16" height="16" fill="#d97757"/>
+    <rect x="108" y="68" width="16" height="16" fill="#d97757"/>
+    <rect x="124" y="68" width="16" height="16" fill="#d97757"/>
+    <rect x="140" y="68" width="16" height="16" fill="#1c1c24"/>
+    <rect x="156" y="68" width="16" height="16" fill="#d97757"/>
+    <rect x="172" y="68" width="16" height="16" fill="#d97757"/>
+    <rect x="44" y="84" width="16" height="16" fill="#d97757"/>
+    <rect x="60" y="84" width="16" height="16" fill="#d97757"/>
+    <rect x="76" y="84" width="16" height="16" fill="#d97757"/>
+    <rect x="92" y="84" width="16" height="16" fill="#d97757"/>
+    <rect x="108" y="84" width="16" height="16" fill="#d97757"/>
+    <rect x="124" y="84" width="16" height="16" fill="#d97757"/>
+    <rect x="140" y="84" width="16" height="16" fill="#d97757"/>
+    <rect x="156" y="84" width="16" height="16" fill="#d97757"/>
+    <rect x="60" y="100" width="16" height="16" fill="#d97757"/>
+    <rect x="76" y="100" width="16" height="16" fill="#d97757"/>
+    <rect x="124" y="100" width="16" height="16" fill="#d97757"/>
+    <rect x="140" y="100" width="16" height="16" fill="#d97757"/>
+  </g>
+  <text x="228" y="80" font-family="'JetBrains Mono','Fira Code',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="58" font-weight="700" fill="url(#g)">CodeShift</text>
+  <text x="231" y="112" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif" font-size="18" fill="#8b8b94">Python → C++ com IA, direto do terminal</text>
+  <text x="231" y="30" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="14" fill="#a78bfa">$ codeshift</text>
+</svg>

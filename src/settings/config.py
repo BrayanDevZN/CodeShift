@@ -3,9 +3,12 @@ import os
 from src.logs import logger
 from src.schema import AppConfig
 from src.color import Color
+from src import ui
 from src.utils.file import FileControl
 from src.exceptions import ModelNotFound, TemperatureError, PathNotFound, NotFoundEnv
 from dotenv import load_dotenv
+DEFAULT_ENV_FILE = ".env"
+
 AVAILABLE_MODELS = [
     "Qwen/Qwen3-Coder-Next",
     "Qwen/Qwen2.5-Coder-14B-Instruct",
@@ -21,12 +24,10 @@ class Settings(FileControl):
         self.color = Color() 
 
     def _header(self, title: str) -> None:
-        line = self.color.purple("═" * 50)
-        print(f"\n{line}\n  {self.color.bold(self.color.cyan(title))}\n{line}")
+        ui.header(title)
 
     def _prompt(self, text: str, hint: str = "") -> str:
-        hint_str = f" {self.color.gray('(')}{self.color.yellow(hint)}{self.color.gray(')')}" if hint else ""
-        return f"{self.color.cyan('❯')} {self.color.bold(text)}{hint_str}{self.color.cyan(':')} "
+        return ui.prompt(text, hint)
 
     def get_config(self) -> dict:
 
@@ -72,6 +73,8 @@ class Settings(FileControl):
                 raise PathNotFound(f"Not found env file {env_file}")
 
             data["env_file"] = env_file
+        else:
+            data["env_file"] = DEFAULT_ENV_FILE
 
         self.save(".codeshift/config.json", data)
 
@@ -135,7 +138,7 @@ class Settings(FileControl):
 
         data = self.get_config()
         envs = {}
-        load_dotenv(data["env_file"])
+        load_dotenv(data.get("env_file") or DEFAULT_ENV_FILE)
 
         for name in NAMES:
 

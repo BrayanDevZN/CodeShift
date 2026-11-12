@@ -26,10 +26,33 @@ class ModelResponse(Settings):
 
             self.instance = ModelTransform(name=self.name, temperature=self.temperature)
 
-    def start(self) -> None:
+    def start(self) -> bool:
+        """Pergunta se quer carregar o modelo agora. Devolve True se o modelo ficou pronto."""
 
-        if isinstance(self.instance, ModelTransform):
-            self.instance.start()
+        c = self.color
+        self._header("🤖  Carregar modelo")
+        print(f"\n{c.bold(c.blue('Modelo:'))} {c.green(self.name)}")
+        print(f"{c.bold(c.blue('Temperatura:'))} {c.yellow(self.temperature)}\n")
+
+        if not isinstance(self.instance, ModelTransform):
+            print(c.green(f"✔ Usando o servidor {self.secrets['url']}: não precisa carregar aqui."))
+            print(c.gray("  Se o modelo não estiver carregado no servidor (LM Studio), carregue lá."))
+            return True
+
+        while True:
+            answer = input(self._prompt("Quer carregar o modelo agora", "Y/n")).strip().lower()
+
+            if answer in ("y", "yes", "s", "sim", ""):
+                print(c.cyan("\n⏳ Carregando, isso pode demorar um pouco...\n"))
+                self.load()
+                print(c.green(f"\n✔ Modelo {c.bold(self.name)} pronto!"))
+                return True
+
+            if answer in ("n", "no", "nao", "não"):
+                print(c.yellow("\n⚠ Modelo não carregado."))
+                return False
+
+            print(c.red("✘ Resposta inválida, digite Y ou n."))
 
     def load(self) -> None:
 
