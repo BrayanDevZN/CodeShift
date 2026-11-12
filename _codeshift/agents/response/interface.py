@@ -1,4 +1,4 @@
-from src.settings.config import Settings
+from _codeshift.settings.config import Settings
 from .openai import ModelOpenAi
 from .transformer import ModelTransform
 

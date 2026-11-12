@@ -3,3 +3,6 @@ __pycache__/
 .env
 .codeshift/
 codeshift.egg-info/
+codeshift_ai.egg-info/
+build/
+dist/

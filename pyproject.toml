@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "codeshift"
+name = "codeshift-ai"
 version = "0.1.0"
 description = "CLI que migra projetos Python para C++ usando IA"
 readme = "README.md"
@@ -21,12 +21,11 @@ local = ["transformers", "torch"]
 
 # Só o CLI é exposto: não há API pública para import, apenas o comando.
 [project.scripts]
-codeshift = "src.cli:main"
+codeshift = "_codeshift.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["src*"]
+include = ["_codeshift*"]
 exclude = ["tests*"]
-namespaces = true
 
 [tool.setuptools.package-data]
-"src.prompt" = ["*.md"]
+"_codeshift.prompt" = ["*.md"]

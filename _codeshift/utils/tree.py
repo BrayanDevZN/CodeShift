@@ -1,9 +1,9 @@
 import os
 from typing import Literal
-from src.color import Color
-from src.utils.file import FileControl
-from src.exceptions import AmbiguousFile
-from src.logs import logger
+from _codeshift.color import Color
+from _codeshift.utils.file import FileControl
+from _codeshift.exceptions import AmbiguousFile
+from _codeshift.logs import logger
 
 Status = Literal["pending", "visited"]
 

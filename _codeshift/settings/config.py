@@ -1,11 +1,11 @@
 
 import os
-from src.logs import logger
-from src.schema import AppConfig
-from src.color import Color
-from src import ui
-from src.utils.file import FileControl
-from src.exceptions import ModelNotFound, TemperatureError, PathNotFound, NotFoundEnv
+from _codeshift.logs import logger
+from _codeshift.schema import AppConfig
+from _codeshift.color import Color
+from _codeshift import ui
+from _codeshift.utils.file import FileControl
+from _codeshift.exceptions import ModelNotFound, TemperatureError, PathNotFound, NotFoundEnv
 from dotenv import load_dotenv
 DEFAULT_ENV_FILE = ".env"
 

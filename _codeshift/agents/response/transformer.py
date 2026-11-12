@@ -1,4 +1,4 @@
-from src.logs import logger
+from _codeshift.logs import logger
 class ModelTransform:
 
     def __init__(self, name:str, temperature:float)-> None:

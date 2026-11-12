@@ -1,8 +1,8 @@
-from src.logs import logger 
+from _codeshift.logs import logger 
 from .response.interface import ModelResponse
-from src.utils.file import FileControl
-from src.utils.tree import Tree
-from src.prompt.prompts import REFACTOR
+from _codeshift.utils.file import FileControl
+from _codeshift.utils.tree import Tree
+from _codeshift.prompt.prompts import REFACTOR
 from ..schema import OutPutMapping
 from .clean import clean_json
 import json

@@ -5,7 +5,7 @@ import sys
 from importlib.metadata import PackageNotFoundError, version
 from urllib.parse import urlparse
 
-from src import ui
+from _codeshift import ui
 
 CONFIG_FILE = ".codeshift/config.json"
 
@@ -37,7 +37,7 @@ def mascot_lines() -> list[str]:
 # ─── Dados do ambiente ─────────────────────────────────────────────────────
 def _version() -> str:
     try:
-        return version("codeshift")
+        return version("codeshift-ai")
     except PackageNotFoundError:
         return "dev"
 
@@ -175,7 +175,7 @@ def action_migrate() -> None:
         print(ui.fg("Cancelado.", ui.GRAY))
         return
 
-    from src.agents.refactor import RefactorAgent
+    from _codeshift.agents.refactor import RefactorAgent
     agent = RefactorAgent()
     if _loaded is not None:
         agent.instance = _loaded.instance
@@ -187,7 +187,7 @@ def action_load() -> None:
     if not require_config():
         return
 
-    from src.agents.response.interface import ModelResponse
+    from _codeshift.agents.response.interface import ModelResponse
     model = ModelResponse()
     if model.start():
         _loaded = model
@@ -195,7 +195,7 @@ def action_load() -> None:
 
 def action_configure() -> None:
     global _loaded
-    from src.settings.config import Settings
+    from _codeshift.settings.config import Settings
     Settings().set_settings()
     _loaded = None
 
@@ -204,13 +204,13 @@ def action_update() -> None:
     global _loaded
     if not require_config():
         return
-    from src.settings.config import Settings
+    from _codeshift.settings.config import Settings
     Settings().update_settings()
     _loaded = None
 
 
 def action_tree() -> None:
-    from src.utils.tree import Tree
+    from _codeshift.utils.tree import Tree
     tree = Tree()
     tree.build()
     tree.show()

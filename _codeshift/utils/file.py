@@ -1,6 +1,6 @@
 import json
 import os
-from src.logs import logger
+from _codeshift.logs import logger
 from typing import Literal, Any
 
 

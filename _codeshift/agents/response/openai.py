@@ -1,5 +1,5 @@
 from openai import OpenAI
-from src.logs import logger 
+from _codeshift.logs import logger 
 
 class ModelOpenAi:
 

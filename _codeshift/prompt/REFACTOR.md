@@ -65,7 +65,7 @@ Files and paths:
 - Every path is relative to the project root. Never use absolute paths or `..`.
 - Always take paths from the tree's `path` field. Never invent files that are not in the tree, except the new `.hpp`, `CMakeLists.txt` and `BUILD.md` files you create with `save`.
 - The result must replace the Python project: once a file is handled, no `.py` of it remains and no Python code is kept next to the C++ one. Do it by renaming with `update`, never by deleting.
-- The C++ code of a `.py` file is ALWAYS written with `update`, in the same folder, never with `save` and never in a new folder such as `src/` or `cpp/`. `save` is only for the extra `.hpp` header, `CMakeLists.txt` and `BUILD.md`, which do not exist yet.
+- The C++ code of a `.py` file is ALWAYS written with `update`, in the same folder, never with `save` and never in a new folder such as `cpp/`. `save` is only for the extra `.hpp` header, `CMakeLists.txt` and `BUILD.md`, which do not exist yet.
 - Use `update` for files that already exist (turning `.py` into `.cpp` or `.hpp`) and `save` only for files that do not exist yet. Do not save the same path twice.
 - `update` always needs the three values: current path, new path and the COMPLETE new content.
 - Never read, edit or create: `.git`, `.venv`, `venv`, `node_modules`, `__pycache__`, `.codeshift`, `.env` and `.env.*`, lockfiles, binary or media files, model files, caches and build output.

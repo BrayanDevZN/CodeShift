@@ -47,13 +47,13 @@ O **CodeShift** percorre o seu projeto Python arquivo por arquivo e pede a um mo
 Requer **Python 3.10** ou mais novo.
 
 ```bash
-pip install codeshift
+pip install codeshift-ai
 ```
 
 Para usar um modelo **local** pelo `transformers` (baixa o `torch`, então é pesado):
 
 ```bash
-pip install "codeshift[local]"
+pip install "codeshift-ai[local]"
 ```
 
 Confira se deu certo:
@@ -62,12 +62,12 @@ Confira se deu certo:
 codeshift --version
 ```
 
-> 💡 **Dica:** para instalar o comando de forma isolada, sem misturar com as bibliotecas do seu sistema, use o [pipx](https://pipx.pypa.io): `pipx install codeshift`.
+> 💡 **Dica:** para instalar o comando de forma isolada, sem misturar com as bibliotecas do seu sistema, use o [pipx](https://pipx.pypa.io): `pipx install codeshift-ai`.
 
 Para atualizar:
 
 ```bash
-pip install --upgrade codeshift
+pip install --upgrade codeshift-ai
 ```
 
 Depois de instalado, só o comando `codeshift` fica disponível. Não há API para importar.
@@ -112,7 +112,7 @@ api_key = lm-studio
 | `url` | endereço do servidor compatível com a API da OpenAI |
 | `api_key` | chave enviada ao servidor (no LM Studio pode ser qualquer texto) |
 
-Sem a variável `url`, o CodeShift usa o modelo local via `transformers` (requer `pip install "codeshift[local]"`).
+Sem a variável `url`, o CodeShift usa o modelo local via `transformers` (requer `pip install "codeshift-ai[local]"`).
 
 ### 2. Modelo e temperatura
 
@@ -201,7 +201,7 @@ Adicione `.codeshift/` ao `.gitignore` do projeto migrado.
 
 4. O agente só termina quando não sobra nenhum `.py` pendente. O código recusa caminhos fora do projeto e pastas como `.git`, `.venv` e `.env*`.
 
-O prompt completo do agente está em [`src/prompt/REFACTOR.md`](src/prompt/REFACTOR.md).
+O prompt completo do agente está em [`_codeshift/prompt/REFACTOR.md`](_codeshift/prompt/REFACTOR.md).
 
 ## Estrutura
 
@@ -209,7 +209,7 @@ O prompt completo do agente está em [`src/prompt/REFACTOR.md`](src/prompt/REFAC
 CodeShift/
 ├── assets/logo.svg
 ├── pyproject.toml
-└── src/
+└── _codeshift/
     ├── cli.py              # menu e telas do terminal
     ├── ui.py               # cores, caixas e componentes visuais
     ├── cmd.py              # roda comandos no terminal
