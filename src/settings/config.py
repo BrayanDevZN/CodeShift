@@ -1,10 +1,17 @@
 
 import os
 from src.logs import logger
-from .schema import AppConfig
+from src.schema import AppConfig
 from src.color import Color
-from src.file import FileControl
-from src.exceptions import ModelNotFound, TemperatureError, CliError, PathNotFound
+from src.utils.file import FileControl
+from src.exceptions import ModelNotFound, TemperatureError, PathNotFound, NotFoundEnv
+from dotenv import load_dotenv
+AVAILABLE_MODELS = [
+    "Qwen/Qwen3-Coder-Next",
+    "Qwen/Qwen2.5-Coder-14B-Instruct",
+    "Qwen/Qwen2.5-Coder-7B-Instruct",
+    "Qwen/Qwen2.5-Coder-3B-Instruct",
+]
 
 class Settings(FileControl):
 
@@ -21,9 +28,9 @@ class Settings(FileControl):
         hint_str = f" {self.color.gray('(')}{self.color.yellow(hint)}{self.color.gray(')')}" if hint else ""
         return f"{self.color.cyan('❯')} {self.color.bold(text)}{hint_str}{self.color.cyan(':')} "
 
-    def  get_config(self, path: str=".codeshift") -> dict:
+    def get_config(self) -> dict:
 
-        self.file = self.read(path + "/config.json")
+        self.file = self.read(".codeshift/config.json")
 
         return AppConfig.model_validate(self.file).model_dump()
 
@@ -34,9 +41,9 @@ class Settings(FileControl):
 
         self._header("⚙  Configuração do CodeShift")
         print(f"\n{self.color.bold(self.color.blue('Modelos disponíveis:'))}")
-        MODELS = ["qwen3-coder-next:80b", "qwen2.5-coder:14b", "qwen2.5-coder:7b"]
+        MODELS = AVAILABLE_MODELS
 
-        for number in range(len(MODELS)-1):
+        for number in range(len(MODELS)):
             print(f"  {self.color.yellow(f'[{number}]')} {self.color.green(MODELS[number])}")
         print()
 
@@ -56,34 +63,24 @@ class Settings(FileControl):
             "temperature": temperature
         }
 
-        get_path = input("\n" + self._prompt("Quer escolher um caminho pra pasta do modelo ser salva", "Y/n"))
+        env_file = input(self._prompt("Caminho do arquivo .env", "opcional, Enter para pular")).strip()
 
-        if not get_path in ["Y", "n"]:
-            raise CliError("Invalid response")
+        if env_file:
+            env_file = os.path.abspath(os.path.expanduser(env_file))
 
-        path = "./"
+            if not os.path.isfile(env_file):
+                raise PathNotFound(f"Not found env file {env_file}")
 
-        if get_path == "Y":
-            path = input(self._prompt("Digite o caminho"))
+            data["env_file"] = env_file
 
-            if not os.path.exists(path):
-                raise PathNotFound(f"Not found path {path}")
+        self.save(".codeshift/config.json", data)
 
-        data["path"] = path 
-
-        
-
-        self.BASE_DIR = ".codeshift" if path is not None else f"{path}/.codeshift"
-        os.makedirs(self.BASE_DIR, exist_ok=True)
-
-        self.save(self.BASE_DIR + "/config.json", data)
-
-        print(self.color.green(f"\n✔ Configurações salvas em {self.color.bold(self.BASE_DIR)}"))
+        print(self.color.green(f"\n✔ Configurações salvas em {self.color.bold(os.path.abspath('.codeshift/config.json'))}"))
         logger.success(f"Settings saved with success")
 
     def update_settings(self) -> None:
         data = self.get_config()
-        models = ["qwen3-coder-next:80b", "qwen2.5-coder:14b", "qwen2.5-coder:7b"]
+        models = AVAILABLE_MODELS
 
         self._header("✎  Atualizar configurações")
 
@@ -132,15 +129,25 @@ class Settings(FileControl):
 
         return data
 
+    def get_envs(self) -> dict:
 
+        NAMES = ["url", "api_key"]
 
+        data = self.get_config()
+        envs = {}
+        load_dotenv(data["env_file"])
 
+        for name in NAMES:
 
-    
+            envs[name] = os.getenv(name)
 
-    
-
+        return envs
 
         
 
+        
+
+    
+
+    
 

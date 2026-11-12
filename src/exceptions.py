@@ -8,3 +8,6 @@ class CliError(Exception):
     pass
 class PathNotFound(Exception):
     pass
+
+class NotFoundEnv(Exception):
+    pass
